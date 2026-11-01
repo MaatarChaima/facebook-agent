@@ -1,0 +1,11 @@
+# Appels à l'API Graph Facebook
+requests==2.34.2
+# Chargement du fichier .env (facebook_agent/config.py)
+python-dotenv==1.2.4
+# Conversion des feeds .xlsx en CSV (create_and_upload_feed, reupload_product_feed)
+pandas==3.0.6
+openpyxl==3.1.5
+# Agent IA : API compatible OpenAI (Groq par défaut)
+openai==3.35.1
+# Interface web locale de l'agent (facebook_agent/web/app.py, lancée sur 127.0.0.1 seulement)
+streamlit==1.66.1

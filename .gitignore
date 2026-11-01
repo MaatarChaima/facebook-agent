@@ -1,0 +1,10 @@
+# Secrets : copier .env.example en .env, jamais versionné
+.env
+
+# Environnement et fichiers locaux
+.venv/
+__pycache__/
+.idea/
+.pytest_cache/
+logs/
+web_prefs.json

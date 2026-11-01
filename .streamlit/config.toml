@@ -1,0 +1,62 @@
+# Interface web de l'agent : écoute locale seulement, aucune statistique d'usage envoyée,
+# polices servies par l'application (facebook_agent/web/static/fonts), aucune requête externe.
+[server]
+address = "127.0.0.1"
+port = 8501
+headless = true
+enableStaticServing = true  # sert seulement facebook_agent/web/static (les polices), URL app/static/…
+
+[browser]
+serverAddress = "127.0.0.1"
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"  # pas de menu ⋮ de Streamlit : l'en-tête de l'application a le sien (app.py)
+
+# --- Thème « Console claire » (palette de docs/design/maquette_demarrage.html) ---------------------------
+# Un seul thème personnalisé, clair, appliqué par défaut même si le système est en mode sombre. Avec des
+# sections [theme.light] / [theme.dark], le navigateur suivrait le réglage du système. Le thème sombre de
+# Streamlit reste au choix dans le menu ; le CSS de la page (app.py) suit alors les couleurs sombres.
+[theme]
+base = "light"
+primaryColor = "#4F46E5"
+backgroundColor = "#F4F5F8"
+secondaryBackgroundColor = "#FFFFFF"  # champs et cartes blancs, bordés
+textColor = "#1F2937"
+borderColor = "#E5E7EB"
+linkColor = "#4F46E5"
+codeBackgroundColor = "#F4F5F8"
+font = "Inter, sans-serif"
+headingFont = "Inter, sans-serif"
+codeFont = "JetBrains Mono, monospace"
+headingFontWeights = [700, 700, 600, 600, 600, 600]
+baseRadius = "10px"
+buttonRadius = "10px"
+showWidgetBorder = true
+showSidebarBorder = true
+redColor = "#DC2626"
+orangeColor = "#EA580C"
+blueColor = "#2563EB"
+greenColor = "#16A34A"
+
+[theme.sidebar]
+backgroundColor = "#EEF0F4"  # bordure droite 1px #E5E7EB et cartes blanches : CSS de app.py
+secondaryBackgroundColor = "#FFFFFF"
+
+[[theme.fontFaces]]
+family = "Inter"
+url = "app/static/fonts/InterVariable.woff2"
+weight = "100 900"
+style = "normal"
+
+[[theme.fontFaces]]
+family = "JetBrains Mono"
+url = "app/static/fonts/JetBrainsMono-Regular.woff2"
+weight = "400"
+style = "normal"
+
+[[theme.fontFaces]]
+family = "JetBrains Mono"
+url = "app/static/fonts/JetBrainsMono-Bold.woff2"
+weight = "700"
+style = "normal"
