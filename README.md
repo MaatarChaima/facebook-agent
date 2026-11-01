@@ -11,6 +11,9 @@ Technologies : Python 3.12 · Graph API v23.0 · Groq (gpt-oss-120b, gpt-oss-20b
 
 Projet réalisé pendant un stage d'été (2025).
 
+https://github.com/user-attachments/assets/040a89fb-af18-4619-85dd-04d46269be49
+
+
 ## Sommaire
 
 - [Présentation](#présentation)
