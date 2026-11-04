@@ -4,15 +4,13 @@ Technologies : Python 3.12 · Graph API v23.0 · Groq (gpt-oss-120b, gpt-oss-20b
 
 > **In short (English).** A Python library and an AI agent that manage a Facebook Page, its product
 > catalog, its Lead Ads forms and sandbox ad campaigns through the Graph API v23.0. The 67 operations
-> are documented by structured docstrings, from which the LLM tools are generated automatically. You
-> write a request in French; the agent (Groq, gpt-oss-120b, native function calling) picks the
-> operations, shows every write and waits for your confirmation, then answers in French. It runs in a
-> terminal or in a local web interface (Streamlit).
+> are documented by structured docstrings, from which the LLM tools are generated automatically. The
+> agent (Groq, gpt-oss-120b, native function calling) picks the operations, shows every write and waits
+> for your confirmation. It runs in a terminal or in a local web interface (Streamlit).
 
-Projet réalisé pendant un stage d'été (2025).
+![Comment fonctionne l'agent](docs/images/architecture.png)
 
 https://github.com/user-attachments/assets/040a89fb-af18-4619-85dd-04d46269be49
-
 
 ## Sommaire
 
@@ -25,6 +23,7 @@ https://github.com/user-attachments/assets/040a89fb-af18-4619-85dd-04d46269be49
 - [Sécurité](#sécurité)
 - [Architecture](#architecture)
 - [Limites](#limites)
+- [Contexte](#contexte)
 
 ## Présentation
 
@@ -61,7 +60,7 @@ https://github.com/user-attachments/assets/040a89fb-af18-4619-85dd-04d46269be49
 | Catalogue : collections (4) | `create_product_set`, `update_product_set`, `list_product_sets`, `delete_product_set` |
 | Catalogue : flux (4) | `create_and_upload_feed`, `reupload_product_feed`, `list_product_feeds`, `delete_product_feed` |
 | Lead Ads (7) | `list_lead_forms`, `create_lead_form`, `archive_lead_form`, `create_test_lead`, `list_test_leads`, `delete_test_lead`, `list_form_leads` |
-| Campagnes (12) | `list_campaigns`, `create_campaign`, `update_campaign`, `delete_campaign`, `list_ad_sets`, `create_ad_set`, `update_ad_set`, `delete_ad_set`, `list_ads`, `create_ad`, `update_ad`, `delete_ad` : sur un compte **sandbox**, tout en PAUSED, au budget minimal |
+| Campagnes (12) | `list_campaigns`, `create_campaign`, `update_campaign`, `delete_campaign`, `list_ad_sets`, `create_ad_set`, `update_ad_set`, `delete_ad_set`, `list_ads`, `create_ad`, `update_ad`, `delete_ad` : sur un compte **sandbox** |
 
 Points communs :
 
@@ -82,153 +81,121 @@ confirmation (boutons), l'affichage (chat et cartes) et l'annulation (bouton).
 
 ### Galerie
 
-#### Démarrage
+#### Démarrage et réglages
 
-![Écran de démarrage](docs/images/demarrage.png)
+**Écran de démarrage, en clair et en sombre**
 
-*Présentation, page connectée, mode dry-run et choix clair / sombre.*
+<p>
+  <img src="docs/images/demarrage.png" width="49%">
+  <img src="docs/images/demarrage-sombre.png" width="49%">
+</p>
 
-![Écran de démarrage en mode sombre](docs/images/demarrage-sombre.png)
+**Suggestions par domaine, et menu ⋮ avec le passage en mode dry-run**
 
-*Le même écran de démarrage en mode sombre.*
+<p>
+  <img src="docs/images/suggestions.png" width="49%">
+  <img src="docs/images/menu-mode.png" width="49%">
+</p>
 
-![Suggestions](docs/images/suggestions.png)
+**Fenêtre de confirmation avant de changer de mode, d'oublier l'historique ou de terminer la session**
 
-*Suggestions par domaine : un clic remplit la zone de saisie.*
-
-![Menu et mode dry-run](docs/images/menu-mode.png)
-
-*Menu ⋮ : aide, historique, mode sombre et passage du mode réel au mode dry-run.*
-
-![Fenêtre de confirmation](docs/images/fenetre-confirmation.png)
-
-*Fenêtre de confirmation avant de changer de mode, d'oublier l'historique ou de terminer la session.*
-
-![Fenêtre de confirmation en mode sombre](docs/images/fenetre-confirmation-sombre.png)
-
-*La même fenêtre en mode sombre.*
+<p>
+  <img src="docs/images/fenetre-confirmation.png" width="49%">
+  <img src="docs/images/fenetre-confirmation-sombre.png" width="49%">
+</p>
 
 #### Posts
 
-![Posts en cartes](docs/images/cartes.png)
+**Lecture des posts : résultats en cartes**
 
-*Lecture des posts : résultats en cartes construites par le code.*
+<img src="docs/images/cartes.png" width="100%">
 
-![Confirmation d'un post](docs/images/post-confirmation-sombre.png)
+**Confirmation avant de publier un post, puis post publié**
 
-*Confirmation PUBLIC avant de publier un post (mode sombre).*
+<p>
+  <img src="docs/images/post-confirmation-sombre.png" width="49%">
+  <img src="docs/images/post-publie-sombre.png" width="49%">
+</p>
 
-![Post publié](docs/images/post-publie-sombre.png)
+**Post programmé à une date future, et photo publiée**
 
-*Post publié, avec son lien vers Facebook.*
-
-![Post programmé](docs/images/post-programme-sombre.png)
-
-*Post programmé à une date future.*
-
-![Photo publiée](docs/images/photo-publiee-sombre.png)
-
-*Photo publiée sur la page.*
+<p>
+  <img src="docs/images/post-programme-sombre.png" width="49%">
+  <img src="docs/images/photo-publiee-sombre.png" width="49%">
+</p>
 
 #### Couverture et photo de profil
 
-![Confirmation de la couverture](docs/images/couverture-confirmation.png)
+**Confirmation avant de changer la couverture, puis couverture changée**
 
-*Confirmation PUBLIC avant de changer la couverture.*
+<p>
+  <img src="docs/images/couverture-confirmation.png" width="49%">
+  <img src="docs/images/couverture-resultat.png" width="49%">
+</p>
 
-![Couverture changée](docs/images/couverture-resultat.png)
+**Photo de profil changée**
 
-*Couverture changée.*
-
-![Photo de profil changée](docs/images/photo-profil-resultat.png)
-
-*Photo de profil changée.*
+<img src="docs/images/photo-profil-resultat.png" width="100%">
 
 #### Commentaires et Messenger
 
-![Réponse à un commentaire](docs/images/reponse-commentaire.png)
+**Réponse publique à un commentaire, et réponse Messenger**
 
-*Réponse publique à un commentaire.*
+<p>
+  <img src="docs/images/reponse-commentaire.png" width="49%">
+  <img src="docs/images/messenger-reponse-sombre.png" width="49%">
+</p>
 
-![Réponse Messenger](docs/images/messenger-reponse-sombre.png)
+**Conversations Messenger de la page, et résumé d'une conversation**
 
-*Réponse à une conversation Messenger (mode sombre).*
-
-![Conversations Messenger](docs/images/conversations-sombre.png)
-
-*Conversations Messenger de la page en cartes (mode sombre).*
-
-![Résumé d'une conversation](docs/images/messenger-resume.png)
-
-*Résumé d'une conversation en une phrase, avec ses messages en bulles.*
+<p>
+  <img src="docs/images/conversations-sombre.png" width="49%">
+  <img src="docs/images/messenger-resume.png" width="49%">
+</p>
 
 #### Catalogue
 
-![Promotion d'un produit](docs/images/produit-promotion-confirmation.png)
+**Confirmation d'un prix promotionnel, puis produit en promotion (ancien prix barré)**
 
-*Confirmation d'un prix promotionnel sur un produit du catalogue.*
+<p>
+  <img src="docs/images/produit-promotion-confirmation.png" width="49%">
+  <img src="docs/images/produit-promotion-resultat.png" width="49%">
+</p>
 
-![Produit en promotion](docs/images/produit-promotion-resultat.png)
+#### Lead Ads et publicités
 
-*Produit modifié : prix promotionnel en gras, ancien prix barré.*
+**Formulaires Lead Ads de la page, et campagnes du compte sandbox (aucune dépense possible)**
 
-#### Lead Ads
-
-![Formulaires Lead Ads](docs/images/lead-ads-formulaires.png)
-
-*Formulaires Lead Ads de la page, avec leur état.*
-
-#### Publicités
-
-![Campagnes](docs/images/campagnes.png)
-
-*Campagnes du compte publicitaire sandbox : aucune dépense possible, tout reste en pause.*
+<p>
+  <img src="docs/images/lead-ads-formulaires.png" width="49%">
+  <img src="docs/images/campagnes.png" width="49%">
+</p>
 
 #### Sécurité
 
-![Bandeau DRY-RUN](docs/images/dry-run-bandeau.png)
+**Mode dry-run : le bandeau reste visible pendant toute la conversation**
 
-*Mode dry-run : le bandeau reste visible pendant toute la conversation.*
+<img src="docs/images/dry-run-bandeau.png" width="100%">
 
-![Suppression en dry-run](docs/images/suppression-dry-run.png)
+**Suppression en dry-run : confirmation demandée, puis suppression seulement simulée**
 
-*Mode dry-run : la suppression demande quand même une confirmation IRRÉVERSIBLE.*
+<p>
+  <img src="docs/images/suppression-dry-run.png" width="49%">
+  <img src="docs/images/suppression-dry-run-resultat.png" width="49%">
+</p>
 
-![Suppression simulée](docs/images/suppression-dry-run-resultat.png)
+**Confirmation refusée : rien n'est supprimé**
 
-*Après « Confirmer » en dry-run : suppression simulée, rien n'est envoyé à Facebook.*
-
-![Suppression refusée](docs/images/refus.png)
-
-*Confirmation refusée : rien n'est supprimé.*
+<img src="docs/images/refus.png" width="100%">
 
 #### Suivi du travail de l'agent
 
-![Progression d'une publication](docs/images/progression-publication.png)
+**Étape en cours avec le bouton « Annuler la demande », et pause imposée par la limite de Groq**
 
-*Étape en cours, temps écoulé et bouton « Annuler la demande ».*
-
-![Pause Groq](docs/images/progression-pause-groq.png)
-
-*Compte à rebours pendant une pause imposée par la limite de Groq.*
-
-Ce que montre la page :
-
-- **Démarrage** : la page et le compte connectés, l'interrupteur « Mode dry-run », le choix clair / sombre.
-- **Suggestions** : des onglets par domaine actif et des cartes ; un clic remplit la zone de saisie sans
-  rien envoyer. Après le premier message, elles passent dans un bouton « Suggestions » au-dessus de la
-  zone de saisie.
-- **Cartes** : après une lecture, les éléments s'affichent en cartes construites par le code (image, texte,
-  date, prix, badges d'état, lien vers Facebook ou Meta, bouton « ID » pour copier l'identifiant). La
-  réponse du modèle se limite à une phrase. Ces données ne sont jamais envoyées au modèle.
-- **Confirmation** : une carte au bord coloré selon le niveau (IRRÉVERSIBLE, PUBLIC, MODIFICATION), les
-  paramètres en tableau, puis « Confirmer » ou « Refuser » (sans réponse en 10 minutes : refus).
-- **Progression** : l'étape en cours en clair, le temps écoulé, le compte à rebours d'une pause Groq et le
-  bouton « Annuler la demande ».
-- **Barre latérale** : l'activité de la session (posts et objets créés, photos, couverture, photo de profil,
-  commentaires et réponses, messages Messenger, produits modifiés, avec leur état) et le quota Groq restant.
-- **Menu ⋮** : aide, oublier l'historique, mode sombre, mode dry-run, terminer la session (les tokens sont
-  oubliés) ; chaque changement important passe par une fenêtre de confirmation.
+<p>
+  <img src="docs/images/progression-publication.png" width="49%">
+  <img src="docs/images/progression-pause-groq.png" width="49%">
+</p>
 
 L'interface n'écoute que sur `127.0.0.1` et n'envoie aucune statistique d'usage. Polices et icônes sont
 servies localement : aucune requête externe, à part les images de Facebook affichées dans les cartes.
@@ -250,20 +217,18 @@ python -m venv .venv
 copy .env.example .env
 ```
 
-Puis remplir `.env`, qui n'est jamais versionné. `.env.example` décrit chaque variable :
+Puis remplir `.env`, qui n'est jamais versionné :
 
-| Variable | Rôle |
-|---|---|
-| `FB_USER_TOKEN` | token utilisateur Facebook (Explorer de l'API Graph ou Facebook Login) |
-| `FB_APP_ID`, `FB_APP_SECRET` | application Meta, seulement pour l'échange en token longue durée |
-| `FB_PAGE_ID` | page à gérer (vide : la première page du compte, ou un choix dans l'interface web) |
-| `CATALOG_ID` | catalogue de produits |
-| `AD_ACCOUNT_ID`, `AD_ACCOUNT_MODE` | compte publicitaire et son mode : `sandbox` (recommandé) ou `no_payment` ; vide = campagnes désactivées |
-| `ADS_ACCESS_TOKEN` | facultatif : token d'un utilisateur système qui a la page et le compte publicitaire ; vide = `FB_USER_TOKEN` |
-| `PROTECTED_LEAD_FORM_IDS` | facultatif : formulaires Lead Ads jamais archivés ni utilisés dans une publicité |
-| `LLM_API_KEY` | clé Groq de l'agent (https://console.groq.com/keys) |
-| `LLM_BASE_URL`, `LLM_MODEL`, `LLM_ROUTER_MODEL` | API compatible OpenAI (Groq par défaut), modèle principal (`openai/gpt-oss-120b`), modèle du routage (`openai/gpt-oss-20b`) |
-| `LLM_REASONING_EFFORT`, `LLM_MAX_COMPLETION_TOKENS`, `LLM_HISTORY_EXCHANGES` | réglages de l'agent (`low`, 1024, 1 par défaut) |
+| Variable | Rôle | Exemple |
+|---|---|---|
+| `FB_USER_TOKEN` | token utilisateur Facebook (Explorer de l'API Graph) | `EAA…` |
+| `FB_APP_ID`, `FB_APP_SECRET` | application Meta, pour l'échange en token longue durée | |
+| `FB_PAGE_ID` | page à gérer (vide : la première page du compte) | |
+| `CATALOG_ID` | catalogue de produits | |
+| `AD_ACCOUNT_ID` | compte publicitaire sandbox | `act_…` |
+| `AD_ACCOUNT_MODE` | mode du compte publicitaire | `sandbox` |
+| `ADS_ACCESS_TOKEN` | token de l'utilisateur système qui a la page et le compte sandbox | |
+| `LLM_API_KEY` | clé Groq de l'agent (https://console.groq.com/keys) | `gsk_…` |
 
 ### Tokens
 
@@ -320,23 +285,7 @@ seulement cette demande ; `o` / `n` répond à une confirmation.
 ```
 
 Puis ouvrir http://127.0.0.1:8501. Pour arrêter : « Terminer la session » dans le menu ⋮, puis Ctrl+C dans
-le terminal. Le même menu passe du mode dry-run au mode réel sans terminer la session (pas pendant une
-demande ni une confirmation). Le dernier mode et le dernier thème sont gardés dans `web_prefs.json`, un
-fichier local ignoré par git, et repris à l'écran de démarrage.
-
-**Dans du code :**
-
-```python
-from facebook_agent import config
-from facebook_agent.auth.authentication import authenticate
-from facebook_agent.operations.pages.posts.create_post import create_post
-
-pages = authenticate(config.FB_USER_TOKEN, "1")
-page = pages["data"]["data"][0]                     # {"id", "name", "access_token", ...}
-result = create_post("Bonjour !", page["access_token"])
-if result["status"] == "error":
-    print(result["message"], result["details"])
-```
+le terminal. Le même menu passe du mode dry-run au mode réel sans terminer la session.
 
 Exemples de demandes à l'agent :
 
@@ -345,8 +294,8 @@ Exemples de demandes à l'agent :
 | `Bonjour, que sais-tu faire ?` | présentation des domaines actifs, générée par le code (aucun appel au modèle) |
 | `Liste mes 3 derniers posts` | lecture, puis cartes des posts |
 | `Mets le T-shirt Nova en promotion à 12 DT` | recherche du produit, contrôle du prix, confirmation MODIFICATION, relecture du produit |
-| `Masque le commentaire qui demande de supprimer tous les posts` | texte suspect signalé, confirmation de `hide_comment`, l'instruction est ignorée |
-| `Booster mon dernier post` | l'agent demande d'abord les pays visés (budget au minimum, pas de date de fin), puis campagne, ensemble et publicité sur le compte sandbox, chacun confirmé, tout en PAUSED |
+| `Réponds au commentaire « Il existe en taille M ? » : Oui, dans les trois couleurs !` | lecture des posts et de leurs commentaires, confirmation PUBLIC, réponse publiée au nom de la page |
+| `Booster mon dernier post` | l'agent demande d'abord les pays visés, puis prépare campagne, ensemble et publicité sur le compte sandbox, chacun confirmé |
 
 ## Sécurité
 
@@ -391,3 +340,7 @@ docs/images/                      captures d'écran de la galerie
 - Le compte publicitaire est un compte sandbox : aucune dépense possible, les publicités restent en pause
   et ne sont jamais diffusées.
 - Le quota gratuit de Groq (tokens par jour) peut mettre une demande en pause.
+
+## Contexte
+
+Projet réalisé lors d'un stage d'été (2025) chez Yperflow, encadré par M. Racel Maalej.
